@@ -53,7 +53,7 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((responses) => {
-        console.log(responses.data);
+        // console.log(responses.data);
         if (responses.data.status !== "00000") {
           this.$message.error(responses.data.message);
         } else {

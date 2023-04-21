@@ -23,21 +23,22 @@
               circle
               @click="getSearch"
             ></el-button>
-            
           </div>
           <div class="addMessage">
-            <el-button 
-            type="success" 
-            @click="addUp">添加信息</el-button>
+            <el-button type="success" @click="addUp">添加信息</el-button>
           </div>
-          
         </div>
 
         <div class="main">
           <el-table :data="tableData" height="80vh" border style="width: 100%">
-            <el-table-column prop="studentId" label="学号" width="150">
+            <el-table-column
+              prop="studentId"
+              label="学号"
+              fixed="left"
+              width="150"
+            >
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="150">
+            <el-table-column prop="name" label="姓名" fixed="left" width="150">
             </el-table-column>
             <el-table-column prop="qq" label="QQ号" width="150">
             </el-table-column>
@@ -72,20 +73,21 @@
                 {{ scope.row.isDispensing === 1 ? "是" : "否" }}
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="100">
+            <el-table-column fixed="right" label="操作" width="200">
               <template slot-scope="scope">
                 <el-button
-                  type="text"
-                  size="small"
-                  @click.native.prevent="popUp(scope.$index, tableData, scope.row.studentId)"
+                  size="mini"
+                  @click.native.prevent="
+                    popUp(scope.$index, tableData, scope.row.studentId)
+                  "
                   >编辑</el-button
                 >
                 <el-button
                   @click.native.prevent="
                     deleteRow(scope.$index, tableData, scope.row.studentId)
                   "
-                  type="text"
-                  size="small"
+                  type="danger"
+                  size="mini"
                   >删除</el-button
                 >
               </template>
@@ -244,9 +246,7 @@
             </el-form>
           </div>
           <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="submitForm"
-              >确 定</el-button
-            >
+            <el-button type="primary" @click="submitForm">确 定</el-button>
             <el-button @click="dialogFormVisible = false">取 消</el-button>
           </div>
         </el-dialog>
@@ -279,13 +279,13 @@ export default {
         "Content-Type": "application/json",
       },
     }).then((getForm) => {
-      console.log(getForm);
+      // console.log(getForm);
       this.tableData = getForm.data.data;
     });
   },
   data() {
     return {
-      idLock:true,
+      idLock: true,
       majorIndex: 0,
       wantIndex: 0,
       wantIndex2: 0,
@@ -596,7 +596,7 @@ export default {
               "Content-Type": "application/json",
             },
           }).then((getForm) => {
-            console.log(getForm);
+            // console.log(getForm);
             this.tableData = getForm.data.data;
           });
         });
@@ -608,7 +608,7 @@ export default {
 
     exit() {
       // console.log("销毁token");
-      localStorage.removeItem("token");
+      // localStorage.removeItem("token");
       this.$router.replace({
         name: "apply",
       });
@@ -627,13 +627,13 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((getForm) => {
-        console.log(getForm);
+        // console.log(getForm);
         this.tableData = getForm.data.data;
       });
     },
 
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
       this.everyPageNum = val;
       request({
         method: "get",
@@ -646,13 +646,13 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((getForm) => {
-        console.log(getForm);
+        // console.log(getForm);
         this.tableData = getForm.data.data;
       });
     },
 
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.currenPageNum = val;
       request({
         method: "get",
@@ -665,7 +665,7 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((getForm) => {
-        console.log(getForm);
+        // console.log(getForm);
         this.tableData = getForm.data.data;
       });
     },
@@ -686,7 +686,7 @@ export default {
     },
     popUp(index, rows, id) {
       this.dialogFormVisible = true;
-      this.idLock=true;
+      this.idLock = true;
       for (let k in rows[index]) {
         this.form[k] = rows[index][k];
         // console.log(rows[index][k]);
@@ -701,10 +701,10 @@ export default {
       // console.log(rows[index])
       // console.log(id)
     },
-    addUp(){
+    addUp() {
       this.dialogFormVisible = true;
-      this.idLock=false;
-      this.form={
+      this.idLock = false;
+      this.form = {
         studentId: "",
         qq: "",
         name: "",
@@ -720,7 +720,7 @@ export default {
         branch2: "", // 组织下属部门 选填
         reason2: "", // 原因 选填
         isDispensing: false,
-      }
+      };
     },
     submitForm() {
       // console.log(form);
@@ -732,7 +732,7 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.data.status !== "00000") {
           this.$message({
             showClose: true,
@@ -757,7 +757,7 @@ export default {
               "Content-Type": "application/json",
             },
           }).then((getForm) => {
-            console.log(getForm);
+            // console.log(getForm);
             this.tableData = getForm.data.data;
           });
         }
@@ -767,7 +767,10 @@ export default {
 
   computed: {
     upForm: function () {
-      if (this.form.organizationName2 === ""||this.form.organizationName2 === null) {
+      if (
+        this.form.organizationName2 === "" ||
+        this.form.organizationName2 === null
+      ) {
         return {
           studentId: this.form.studentId + "", //学号 必填
           name: this.form.name, //姓名 必填

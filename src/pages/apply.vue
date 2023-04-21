@@ -452,7 +452,7 @@ export default {
   },
   methods: {
     submitForm() {
-      console.log(this.upForm);
+      // console.log(this.upForm);
       this.upForm.studentId=this.form.studentId+"";
       this.upForm.qq=this.form.qq+"";
       this.upForm.phoneNum=this.form.phoneNum+"";
@@ -467,7 +467,7 @@ export default {
             },
           })
             .then((response) => {
-              console.log(response);
+              // console.log(response);
               if (response.data.status !== "00000") {
                 this.$message({
                 showClose: true,
