@@ -1,28 +1,38 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="all">
+    <!-- <login/> -->
+    <!-- <apply/>  -->
+    <!-- <management/> -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+// import login from './components/login.vue';
+// import apply from './pages/apply.vue';
+// import management from './pages/management.vue';
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    // login
+    // apply
+    // management
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+* {
+  margin: 0px;
 }
+html,body{
+  height: 100%;
+}
+
+/* .all {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+} */
 </style>
