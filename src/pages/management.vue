@@ -4,6 +4,7 @@
       <el-header height="60px">
         <el-page-header
           @back="exit"
+          title="登出"
           content="学生管理"
           class="headTitle"
         ></el-page-header>
@@ -31,14 +32,9 @@
 
         <div class="main">
           <el-table :data="tableData" height="80vh" border style="width: 100%">
-            <el-table-column
-              prop="studentId"
-              label="学号"
-              fixed="left"
-              width="150"
-            >
+            <el-table-column prop="studentId" label="学号" fixed="left" width="100">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" fixed="left" width="150">
+            <el-table-column prop="name" label="姓名" fixed="left" width="100">
             </el-table-column>
             <el-table-column prop="qq" label="QQ号" width="150">
             </el-table-column>
@@ -46,7 +42,7 @@
             </el-table-column>
             <el-table-column prop="major" label="专业" width="150">
             </el-table-column>
-            <el-table-column prop="className" label="班级" width="150">
+            <el-table-column prop="className" label="班级" width="100">
             </el-table-column>
             <el-table-column
               prop="organizationName1"
@@ -54,7 +50,7 @@
               width="150"
             >
             </el-table-column>
-            <el-table-column prop="branch1" label="部门" width="150">
+            <el-table-column prop="branch1" label="部门" width="100">
             </el-table-column>
             <el-table-column prop="reason1" label="理由" width="150">
             </el-table-column>
@@ -64,16 +60,16 @@
               width="150"
             >
             </el-table-column>
-            <el-table-column prop="branch2" label="部门" width="150">
+            <el-table-column prop="branch2" label="部门" width="100">
             </el-table-column>
             <el-table-column prop="reason2" label="理由" width="150">
             </el-table-column>
-            <el-table-column prop="isDispensing" label="是否调剂" width="150">
+            <el-table-column prop="isDispensing" label="是否调剂" width="100">
               <template slot-scope="scope">
                 {{ scope.row.isDispensing === 1 ? "是" : "否" }}
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="200">
+            <el-table-column fixed="right" label="操作" width="143">
               <template slot-scope="scope">
                 <el-button
                   size="mini"
@@ -809,7 +805,7 @@ export default {
   width: 100%;
 }
 .el-header {
-  background-color: #dcdfe6;
+  background: linear-gradient(to bottom right, #84fab0, #8fd3f4);
   color: #333;
   display: flex;
   flex-direction: column;
@@ -818,14 +814,8 @@ export default {
   text-align: center;
 }
 
-.el-aside {
-  background-color: #d3dce6;
-  color: #333;
-  text-align: center;
-}
-
 .el-main {
-  background-color: #e9eef3;
+  background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb);
   color: #333;
   text-align: center;
 }
