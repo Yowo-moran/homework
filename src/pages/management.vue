@@ -608,7 +608,7 @@ export default {
 
     exit() {
       // console.log("销毁token");
-      // localStorage.removeItem("token");
+      localStorage.removeItem("token");
       this.$router.replace({
         name: "apply",
       });
