@@ -99,9 +99,9 @@
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :page-sizes="[10, 15, 20, 25, 30]"
-              :page-size="100"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="100"
+              :page-size="this.everyPageNum"
+              layout="sizes, prev, pager, next, jumper"
+              :total="this.page*this.everyPageNum"
             >
             </el-pagination>
           </div>
@@ -279,8 +279,9 @@ export default {
         "Content-Type": "application/json",
       },
     }).then((getForm) => {
-      // console.log(getForm);
-      this.tableData = getForm.data.data;
+      console.log(getForm);
+      this.tableData = getForm.data.data.list;
+      this.page=getForm.data.data.page;
     });
   },
   data() {
@@ -295,6 +296,7 @@ export default {
       search: "",
       currenPageNum: 1,
       everyPageNum: 10,
+      page:10,
       pageAll: 1,
       tableData: [],
       form: {
@@ -596,8 +598,8 @@ export default {
               "Content-Type": "application/json",
             },
           }).then((getForm) => {
-            // console.log(getForm);
-            this.tableData = getForm.data.data;
+            console.log(getForm);
+            this.tableData = getForm.data.data.list;
           });
         });
       // console.log(rows);
@@ -627,8 +629,8 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((getForm) => {
-        // console.log(getForm);
-        this.tableData = getForm.data.data;
+        console.log(getForm);
+        this.tableData = getForm.data.data.list;
       });
     },
 
@@ -646,8 +648,8 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((getForm) => {
-        // console.log(getForm);
-        this.tableData = getForm.data.data;
+        console.log(getForm);
+        this.tableData = getForm.data.data.list;
       });
     },
 
@@ -665,8 +667,8 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((getForm) => {
-        // console.log(getForm);
-        this.tableData = getForm.data.data;
+        console.log(getForm);
+        this.tableData = getForm.data.data.list;
       });
     },
     getMajorIndex(index) {
@@ -757,8 +759,8 @@ export default {
               "Content-Type": "application/json",
             },
           }).then((getForm) => {
-            // console.log(getForm);
-            this.tableData = getForm.data.data;
+            console.log(getForm);
+            this.tableData = getForm.data.data.list;
           });
         }
       });
