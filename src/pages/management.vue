@@ -100,8 +100,8 @@
               @current-change="handleCurrentChange"
               :page-sizes="[10, 15, 20, 25, 30]"
               :page-size="this.everyPageNum"
-              layout="sizes, prev, pager, next, jumper"
-              :total="this.page*this.everyPageNum"
+              layout="total,sizes, prev, pager, next, jumper"
+              :total="this.total"
             >
             </el-pagination>
           </div>
@@ -281,23 +281,24 @@ export default {
     }).then((getForm) => {
       console.log(getForm);
       this.tableData = getForm.data.data.list;
-      this.page=getForm.data.data.page;
+      this.pageAll = getForm.data.data.pages;
+      this.total = getForm.data.data.total;
     });
   },
   data() {
     return {
-      idLock: true,
-      majorIndex: 0,
-      wantIndex: 0,
-      wantIndex2: 0,
+      idLock: true, //学号文本框锁
+      majorIndex: 0, //专业下标
+      wantIndex: 0, //第一志愿下标
+      wantIndex2: 0, //第二志愿下标
       dialogTableVisible: false,
       dialogFormVisible: false,
       formLabelWidth: "120px",
-      search: "",
-      currenPageNum: 1,
-      everyPageNum: 10,
-      page:10,
-      pageAll: 1,
+      search: "", //模糊搜索
+      currenPageNum: 1, //当前页
+      everyPageNum: 10, //每页条数
+      pageAll: 1, //总页数
+      total: 10, //总条数
       tableData: [],
       form: {
         studentId: "",
@@ -572,6 +573,43 @@ export default {
     };
   },
   methods: {
+    getRequest() {
+      request({
+        method: "get",
+        url: "/get/allForm",
+        params: {
+          page: this.currenPageNum + "", //第几页
+          numPerPage: this.everyPageNum + "", //每页多少条数据
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((getForm) => {
+        console.log(getForm);
+        this.tableData = getForm.data.data.list;
+        this.pageAll = getForm.data.data.pages;
+        this.total = getForm.data.data.total;
+      });
+    },//获取数据
+    searchRequest() {
+      request({
+        method: "get",
+        url: "/get/searchForm",
+        params: {
+          keyWord: this.search,
+          page: this.currenPageNum, //第几页
+          numPerPage: this.everyPageNum, //每页多少条数据
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((getForm) => {
+        console.log(getForm);
+        this.tableData = getForm.data.data.list;
+        this.pageAll = getForm.data.data.pages;
+        this.total = getForm.data.data.total;
+      });
+    },//模糊搜索获取数据
     deleteRow(index, rows, id) {
       request({
         method: "post",
@@ -582,95 +620,52 @@ export default {
         headers: {
           "Content-Type": "application/json",
         },
-      })
-        .then((a) => {
-          console.log(a);
-        })
-        .then((a) => {
-          request({
-            method: "get",
-            url: "/get/allForm",
-            params: {
-              page: this.currenPageNum + "", //第几页
-              numPerPage: this.everyPageNum + "", //每页多少条数据
-            },
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }).then((getForm) => {
-            console.log(getForm);
-            this.tableData = getForm.data.data.list;
-          });
-        });
+      }).then((a) => {
+        console.log(a);
+        if (this.search === "") {
+          this.getRequest();
+        } else {
+          this.searchRequest();
+        }
+      });
       // console.log(rows);
       // console.log(index);
       // console.log(id);
       // rows.splice(index, 1);
-    },
-
+    },//删除功能
     exit() {
       // console.log("销毁token");
       localStorage.removeItem("token");
       this.$router.replace({
         name: "apply",
       });
-    },
+    },//退出
 
     getSearch() {
-      request({
-        method: "get",
-        url: "/get/searchForm",
-        params: {
-          keyWord: this.search,
-          page: this.currenPageNum + "", //第几页
-          numPerPage: this.everyPageNum + "", //每页多少条数据
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((getForm) => {
-        console.log(getForm);
-        this.tableData = getForm.data.data.list;
-      });
-    },
+      this.everyPageNum = 10;
+      this.currenPageNum = 1;
+      this.searchRequest();
+    },//模糊搜索
 
     handleSizeChange(val) {
-      // console.log(`每页 ${val} 条`);
+      // console.log(this.everyPageNum);
       this.everyPageNum = val;
-      request({
-        method: "get",
-        url: "/get/allForm",
-        params: {
-          page: this.currenPageNum + "", //第几页
-          numPerPage: this.everyPageNum + "", //每页多少条数据
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((getForm) => {
-        console.log(getForm);
-        this.tableData = getForm.data.data.list;
-      });
-    },
+      if (this.search === "") {
+        this.getRequest();
+      } else {
+        this.searchRequest();
+      }
+    },//每页条数改变
 
     handleCurrentChange(val) {
-      // console.log(`当前页: ${val}`);
+      // console.log(this.currenPageNum);
       this.currenPageNum = val;
-      request({
-        method: "get",
-        url: "/get/allForm",
-        params: {
-          page: this.currenPageNum + "", //第几页
-          numPerPage: this.everyPageNum + "", //每页多少条数据
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((getForm) => {
-        console.log(getForm);
-        this.tableData = getForm.data.data.list;
-      });
-    },
+      if (this.search === "") {
+        this.getRequest();
+      } else {
+        this.searchRequest();
+      }
+    },//换页
     getMajorIndex(index) {
       this.majorIndex = index;
       // console.log(index);
@@ -702,7 +697,7 @@ export default {
       // console.log(index)
       // console.log(rows[index])
       // console.log(id)
-    },
+    },//向对话框上传数据
     addUp() {
       this.dialogFormVisible = true;
       this.idLock = false;
@@ -723,7 +718,7 @@ export default {
         reason2: "", // 原因 选填
         isDispensing: false,
       };
-    },
+    },//添加信息
     submitForm() {
       // console.log(form);
       this.$axios({
@@ -748,23 +743,10 @@ export default {
             message: "恭喜你，成功提交！！！",
             type: "success",
           });
-          request({
-            method: "get",
-            url: "/get/allForm",
-            params: {
-              page: this.currenPageNum + "", //第几页
-              numPerPage: this.everyPageNum + "", //每页多少条数据
-            },
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }).then((getForm) => {
-            console.log(getForm);
-            this.tableData = getForm.data.data.list;
-          });
+          this.getRequest();
         }
       });
-    },
+    },//提交
   },
 
   computed: {
