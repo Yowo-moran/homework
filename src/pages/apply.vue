@@ -147,7 +147,7 @@
         </div>
         <div class="submit">
           <el-form-item>
-            <el-button type="primary" @click="submitForm"
+            <el-button type="primary" :disabled="submitButton" @click="submitForm"
               >&nbsp;报&nbsp;&nbsp;&nbsp;&nbsp;名&nbsp;</el-button
             >
           </el-form-item>
@@ -167,6 +167,7 @@ export default {
   name: "apply",
   data() {
     return {
+      submitButton:false,
       majorIndex: 0,
       wantIndex: 0,
       wantIndex2: 0,
@@ -469,12 +470,14 @@ export default {
             .then((response) => {
               // console.log(response);
               if (response.data.status !== "00000") {
+                this.throttle();
                 this.$message({
                 showClose: true,
                 message: "请检查你的信息！！！",
                 type: "error",
               });
               }else{
+                this.throttle();
                 this.$message({
                   showClose: true,
                   message: "恭喜你，成功提交！！！",
@@ -500,6 +503,12 @@ export default {
           return false;
         }
       });
+    },
+    throttle(){
+      this.submitButton=true;
+      setTimeout(() => {
+        this.submitButton=false;
+      }, 1000);
     },
     getMajorIndex(index) {
       this.majorIndex = index;
